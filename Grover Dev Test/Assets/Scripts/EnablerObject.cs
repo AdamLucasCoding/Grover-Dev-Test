@@ -1,16 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnablerObject : MonoBehaviour
 {
-    void EnableObject()
+    public void EnableObject()
     {
-        this.GetComponent<GameObject>().SetActive(true);
+        this.gameObject.SetActive(true);
     }
 
-    void DisableObject()
+    public void DisableObject()
     {
-        this.GetComponent<GameObject>().SetActive(true);
+        this.gameObject.SetActive(false);
+
     }
 }
