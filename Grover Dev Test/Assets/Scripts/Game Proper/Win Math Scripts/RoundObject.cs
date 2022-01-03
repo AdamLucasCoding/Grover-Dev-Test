@@ -178,11 +178,22 @@ public class RoundObject : MonoBehaviour
 
         for (int i = 0; i < RandomNumOfChests - 1; i++)
         {
-            IndividualWinnings.Add(System.Math.Round(Random.Range(.01f, TempTotalWinnings), 2));
-            TempTotalWinnings -= (float)IndividualWinnings[IndividualWinnings.Count - 1];
+            if (TempTotalWinnings >= 0.01)
+            {
+                IndividualWinnings.Add(System.Math.Round(Random.Range(.01f, TempTotalWinnings), 2));
+                TempTotalWinnings -= (float)IndividualWinnings[IndividualWinnings.Count - 1];
+            }
+            else
+            {
+                break;
+            }
+            
         }
 
-        IndividualWinnings.Add(System.Math.Round(TempTotalWinnings, 2));
+        if (TempTotalWinnings >= 0.01)
+        {
+            IndividualWinnings.Add(System.Math.Round(TempTotalWinnings, 2));
+        }
 
         int TempIndex;
         WinForRoundOrder.Clear();
@@ -190,8 +201,10 @@ public class RoundObject : MonoBehaviour
         while (0 < IndividualWinnings.Count)
         {
             TempIndex = Random.Range(0, IndividualWinnings.Count - 1);
-            
-            WinForRoundOrder.Add(IndividualWinnings[TempIndex] * 5);
+            if (IndividualWinnings[TempIndex] > 0)
+            {
+                WinForRoundOrder.Add(IndividualWinnings[TempIndex] * 5);
+            }
 
             IndividualWinnings.RemoveAt(TempIndex);
         }
@@ -207,7 +220,7 @@ public class RoundObject : MonoBehaviour
         //Pull the next available index in the order.
         if (0 < WinForRoundOrder[ChestIndex])
         {
-            MoneyWonText.text = WinForRoundOrder[ChestIndex].ToString("F2");
+            MoneyWonText.text = "$" + WinForRoundOrder[ChestIndex].ToString("F2");
             Manager.UpdateRunningBalance(WinForRoundOrder[ChestIndex]);
             MoneyWonImage.EnableObject();
             ChestLocker.Lock();
